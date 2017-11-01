@@ -3,8 +3,8 @@ import React, { Component } from 'react';
 
 // Components
 import NavBar from '../NavBar/component';
-import MonthlyStatements from '../MonthlyStatements/component';
 import YearOverview from '../YearOverview/component';
+import MonthlyStatements from '../MonthlyStatements/component';
 
 // Styles
 import './app.css';
@@ -14,12 +14,8 @@ class App extends Component {
     super(props);
 
     this.state = {
-      view: 'MonthlyStatements',
+      view: 'YearOverview',
     };
-  }
-
-  componentDidMount() {
-    //openDB();
   }
 
   onNavigate(state) {

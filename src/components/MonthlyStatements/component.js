@@ -22,7 +22,7 @@ class MonthlyStatements extends Component {
     super(props);
 
     this.state = {
-      statement: '201710',
+      statement: monthlyStatements[0].id,
       current: [],
       bills: [],
     };
@@ -45,7 +45,7 @@ class MonthlyStatements extends Component {
     const billsUrl = 'data/bills/' + statement + '.json';
 
     // fetch monthly statment data
-    if (typeof document !== 'undefined') {
+    if (typeof document !== 'undefined')
       fetch(currentUrl)
         .then(result => result.json())
         .then(json => {
@@ -59,7 +59,6 @@ class MonthlyStatements extends Component {
         .catch(err => {
           console.error('Failed to load data', err);
         });
-    }
   }
 
   render() {
@@ -111,17 +110,6 @@ class MonthlyStatements extends Component {
     const disparity = monthlyBudget + moneyOut;
     const disparityClass = disparity < 0 ? 'text-danger' : 'text-primary';
 
-    // set table config for account transactions
-    const hidden = 'align-right hidden-xs hidden-sm';
-    const accountConfig = [
-      { id: 'date', classes: 'hidden-xs', label: 'Date' },
-      { id: 'type', classes: 'hidden-xs hidden-sm', label: 'Type' },
-      { id: 'desc', classes: '', label: 'Description' },
-      { id: 'amount', classes: 'align-right', label: 'Amount' },
-      { id: 'balance', classes: 'align-right', label: 'Balance' },
-      { id: 'tags', classes: hidden, label: 'Tags' },
-    ];
-
     // set table data for account transactions
     const currentData = JSON.parse(JSON.stringify(current));
     const billsData = JSON.parse(JSON.stringify(bills));
@@ -135,6 +123,17 @@ class MonthlyStatements extends Component {
       billsData[i].balance = formatToCurrency(billsData[i].balance, '£');
       billsData[i].tags = billsData[i].tags.join(' | ');
     }
+
+    // set table config for account transactions
+    const hidden = 'align-right hidden-xs hidden-sm';
+    const accountConfig = [
+      { id: 'date', classes: 'hidden-xs', label: 'Date' },
+      { id: 'type', classes: 'hidden-xs hidden-sm', label: 'Type' },
+      { id: 'desc', classes: '', label: 'Description' },
+      { id: 'amount', classes: 'align-right', label: 'Amount' },
+      { id: 'balance', classes: 'align-right', label: 'Balance' },
+      { id: 'tags', classes: hidden, label: 'Tags' },
+    ];
 
     return (
       <div className="monthly-statements">

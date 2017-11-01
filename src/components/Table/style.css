@@ -1,0 +1,9 @@
+
+.banking-table table {
+  margin-bottom: 0; 
+}
+
+.banking-table table th.align-right,
+.banking-table table td.align-right {
+  text-align: right;
+}

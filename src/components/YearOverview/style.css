@@ -1,0 +1,11 @@
+.import-statement {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+@media only screen and (min-width: 786px) {
+  .import-statement {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

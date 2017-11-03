@@ -34,7 +34,7 @@ export const sortByKey = (array, key) => {
 
 /* returns string of concatenated array values */
 
-export const createSlugFromArray = (full, exclude) => {
+const createSlugFromArray = (full, exclude) => {
   const dfault = full[0];
   // remove all excluded items
   for (let i in exclude) {
@@ -43,4 +43,31 @@ export const createSlugFromArray = (full, exclude) => {
   }
   // return default or created slug
   return !full.length ? dfault : full.join('-');
+};
+
+/* return boolean condition based on matching any array value */
+
+const anyTagCondition = (full, include) => {
+  for (let i in include)
+    if (full.includes(include[i])) return true;
+};
+
+/* create subset of transactions that only include specfic tags */
+
+export const getSubsetTransactions = (transactions, tags, exclude) => {
+  const subset = [];
+  for (let i in transactions) {
+    // clone transaction object
+    const transaction = JSON.parse(JSON.stringify(transactions[i]));
+    if (anyTagCondition(transaction.tags, tags)) {
+      // create subset key for this transaction
+      const key = createSlugFromArray(transaction.tags, exclude);
+      // add key and initial object to subset array
+      if (!(key in subset)) subset[key] = { count: 0, amount: 0 };
+      // increment subset object
+      subset[key].count += 1;
+      subset[key].amount += parseFloat(transaction.amount);
+    }
+  }
+  return subset;
 };

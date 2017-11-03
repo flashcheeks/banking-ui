@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 // Components
 import NavBar from '../NavBar/component';
-import YearOverview from '../YearOverview/component';
+import MonthlyComparison from '../MonthlyComparison/component';
 import MonthlyStatements from '../MonthlyStatements/component';
 
 // Styles
@@ -14,7 +14,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      view: 'YearOverview',
+      view: 'MonthlyComparison',
     };
   }
 
@@ -34,8 +34,8 @@ class App extends Component {
           ? <MonthlyStatements onNavigate={state => this.onNavigate(state)} />
           : null}
 
-        {view === 'YearOverview'
-          ? <YearOverview onNavigate={state => this.onNavigate(state)} />
+        {view === 'MonthlyComparison'
+          ? <MonthlyComparison onNavigate={state => this.onNavigate(state)} />
           : null}
 
       </div>

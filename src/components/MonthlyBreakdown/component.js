@@ -5,19 +5,13 @@ import React, { Component } from 'react';
 import Table from '../Table/component';
 
 import { monthlyBudget } from '../../config.js';
-import { sortByKey, createSlugFromArray } from '../../helpers.js';
+import { sortByKey, getSubsetTransactions } from '../../helpers.js';
 import { formatToCurrency, formatPercentage } from '../../helpers.js';
 
 // Styles
 import './style.css';
 
 class MonthlyBreakdown extends Component {
-  //
-  anyTagCondition(full, include) {
-    for (let i in include)
-      if (full.includes(include[i])) return true;
-  }
-
   render() {
     const { transactions, title, tags } = this.props;
 
@@ -25,20 +19,7 @@ class MonthlyBreakdown extends Component {
     const exclude = tags.concat(['expand']);
 
     // create subset of transactions that only include specfic tags
-    const breakdown = [];
-    for (let i in transactions) {
-      // clone transaction object
-      const transaction = JSON.parse(JSON.stringify(transactions[i]));
-      if (this.anyTagCondition(transaction.tags, tags)) {
-        // create breakdown key for this transaction
-        const key = createSlugFromArray(transaction.tags, exclude);
-        // add key and initial object to breakdown array
-        if (!(key in breakdown)) breakdown[key] = { count: 0, amount: 0 };
-        // increment breakdown object
-        breakdown[key].count += 1;
-        breakdown[key].amount += parseFloat(transaction.amount);
-      }
-    }
+    const breakdown = getSubsetTransactions(transactions, tags, exclude);
 
     // calulate subset total amount
     let total = 0;
@@ -73,7 +54,7 @@ class MonthlyBreakdown extends Component {
       { id: 'tag', classes: '', label: 'Tag' },
       { id: 'count', classes: 'align-right visible-lg', label: 'Count' },
       { id: 'amount', classes: 'align-right', label: 'Amount' },
-      { id: 'breakdown', classes: hidden, label: 'Breakdown%' },
+      { id: 'breakdown', classes: hidden, label: title + '%' },
       { id: 'budget', classes: 'align-right', label: 'Budget%' },
     ];
 

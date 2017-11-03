@@ -10,8 +10,7 @@ import Dropdown from '../Dropdown/component';
 import MonthlyBreakdown from '../MonthlyBreakdown/component';
 
 import { monthlyBudget, monthlyStatements } from '../../config.js';
-import { excludeTagCondition, excludeTransferCondition } from '../../config.js';
-import { excludeRefundCondition, excludeDupCondition } from '../../config.js';
+import { getAllTransactions, getMoneyTotals } from '../../config.js';
 import { formatToCurrency } from '../../helpers.js';
 
 // Styles
@@ -78,36 +77,14 @@ class MonthlyStatements extends Component {
     const billsBalClass = billsBal < 0 ? 'text-danger' : 'text-primary';
 
     // create single source of all transactions
-    const allTransactions = [];
-    let transfer = null;
-    for (let i in bills) {
-      if (excludeTagCondition(bills[i].tags)) {
-        bills[i].tags.includes('transfer')
-          ? (transfer = Math.abs(bills[i].amount))
-          : allTransactions.push(JSON.parse(JSON.stringify(bills[i])));
-      }
-    }
-    for (let i in current) {
-      if (excludeRefundCondition(current[i].desc, current[i].amount)) {
-        if (excludeTransferCondition(current[i], transfer)) {
-          allTransactions.push(JSON.parse(JSON.stringify(current[i])));
-        }
-      }
-    }
+    const allTransactions = getAllTransactions(current, bills);
 
     // set money in and out totals
-    let moneyIn = 0;
-    let moneyOut = 0;
-    for (let i in allTransactions) {
-      if (excludeDupCondition(statement, allTransactions[i].amount)) {
-        const amount = parseFloat(allTransactions[i].amount);
-        amount > 0 ? (moneyIn += amount) : (moneyOut += amount);
-      }
-    }
+    const money = getMoneyTotals(allTransactions, statement);
 
     // set extra and disparity values
-    const extraBudget = moneyIn - monthlyBudget;
-    const disparity = monthlyBudget + moneyOut;
+    const extraBudget = money.in - monthlyBudget;
+    const disparity = monthlyBudget + money.out;
     const disparityClass = disparity < 0 ? 'text-danger' : 'text-primary';
 
     // set table data for account transactions
@@ -201,7 +178,7 @@ class MonthlyStatements extends Component {
                 <div className="col-sm-4 big-number">
                   <h4>Money Out</h4>
                   <h1 className="text-danger">
-                    {formatToCurrency(moneyOut, '£')}
+                    {formatToCurrency(money.out, '£')}
                   </h1>
                 </div>
               </div>

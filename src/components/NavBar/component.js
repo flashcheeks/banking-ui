@@ -37,18 +37,18 @@ class NavBar extends Component {
             <ul className="nav navbar-nav navbar-right">
               <li>
                 <a
-                  href="#MonthlyStatements"
-                  onClick={event => this.navigate(event, 'MonthlyStatements')}
+                  href="#MonthlyComparison"
+                  onClick={event => this.navigate(event, 'MonthlyComparison')}
                 >
-                  Monthly Statements
+                  Monthly Comparison
                 </a>
               </li>
               <li>
                 <a
-                  href="#YearOverview"
-                  onClick={event => this.navigate(event, 'YearOverview')}
+                  href="#MonthlyStatements"
+                  onClick={event => this.navigate(event, 'MonthlyStatements')}
                 >
-                  Year Overview
+                  Monthly Statements
                 </a>
               </li>
             </ul>

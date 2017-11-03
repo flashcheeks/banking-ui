@@ -3,7 +3,24 @@
   margin-bottom: 0; 
 }
 
+.banking-table table h4 {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
 .banking-table table th.align-right,
 .banking-table table td.align-right {
   text-align: right;
+}
+
+.banking-table table th.border-left,
+.banking-table table td.border-left {
+  border-left: 1px solid #ddd;
+}
+
+.banking-table table td .range1 {
+  opacity: 0.2;
+}
+.banking-table table td .range2 {
+  opacity: 0.6;
 }
